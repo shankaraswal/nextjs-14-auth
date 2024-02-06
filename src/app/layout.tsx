@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import Sitenav from "./sitenav/page";
+import { NextAuthProvider } from "./provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,7 +18,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <main className="min-h-screen">
+          <NextAuthProvider>
+            <Sitenav />
+            <div className=" container m-auto border border-gray-400 rounded-b-2xl shadow-grey-300 shadow-xl p-10 flex-row mt-14 mb-40">
+              <div className="min-h-[500px] ">{children}</div>
+            </div>
+          </NextAuthProvider>
+        </main>
+      </body>
     </html>
   );
 }
