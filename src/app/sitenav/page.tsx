@@ -12,28 +12,23 @@ export default function Sitenav() {
   const { data, status } = useSession();
   const router = useRouter();
 
-  useEffect(() => {
-    if (pathName === "/" && status === "authenticated") {
-      redirect("/home");
-    }
-  }, []);
-
   const handleLogout = () => {
     signOut();
     router.push("/");
   };
 
   const handleLogin = () => {
-    router.push("/");
+    router.push("/dashboard");
   };
-
-  console.log("NAV BARRRR", data, status);
 
   if (!data && status === "loading") {
     return null;
   }
   if (!data && status === "unauthenticated") {
     router.push("/");
+  }
+  if (pathName === "/" && status === "authenticated") {
+    router.push("/dashboard");
   }
 
   return (
@@ -56,19 +51,21 @@ export default function Sitenav() {
           );
         })}
         {data && status === "authenticated" ? (
-          <button
+          <Link
+            passHref
             className="text-bold text-3xl text-white px-10 py-5 hover:bg-orange-500 hover:px-10 hover:py-5 hover:text-white"
-            onClick={handleLogout}
+            href={"/"}
           >
-            Logout
-          </button>
+            <span onClick={handleLogout}>Logout</span>
+          </Link>
         ) : (
-          <button
+          <Link
             className="text-bold text-3xl text-white px-10 py-5 hover:bg-orange-500 hover:px-10 hover:py-5 hover:text-white"
-            onClick={handleLogin}
+            passHref
+            href={"/"}
           >
-            Login
-          </button>
+            <span onClick={handleLogin}>Login</span>
+          </Link>
         )}
       </div>
     </header>
